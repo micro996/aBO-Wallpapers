@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Discover and download stunning HD wallpapers. Browse nature, anime, abstract, cars, and more — free high-quality wallpapers for your device." />
+  <meta name="theme-color" content="#0F172A" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Wallpaper Gallery — Discover & Download HD Wallpapers" />
+  <meta property="og:description"
+    content="Browse and download free high-quality wallpapers for your phone and desktop." />
+  <meta property="og:type" content="website" />
+
+  <title>Wallpaper Gallery — Discover & Download HD Wallpapers</title>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+
+<body>
+
+  <!-- ========== SCREENS ========== -->
+  <div id="screen-home" class="screen active">
+    <!-- ========== APP HEADER ========== -->
+    <header class="app-header" role="banner">
+      <div class="app-header__inner">
+        <!-- Menu Button -->
+        <button class="app-header__icon-btn" aria-label="Open menu" id="menu-btn">
+          <svg class="icon--lg" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+          </svg>
+        </button>
+
+        <!-- Title -->
+        <div>
+          <h1 class="app-header__title">
+            Wallpaper <span class="app-header__title-accent">Gallery</span>
+          </h1>
+          <p class="app-header__subtitle">discover &amp; download</p>
+        </div>
+
+        <!-- Notification Button -->
+        <button class="app-header__icon-btn" aria-label="Notifications" id="notification-btn">
+          <svg class="icon--md" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+          </svg>
+          <span class="app-header__notification-dot" aria-hidden="true"></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ========== SEARCH BAR ========== -->
+    <section class="search-bar" aria-label="Search wallpapers">
+      <div class="search-bar__inner">
+        <div class="search-bar__input-wrapper">
+          <label for="search-input" class="sr-only">Search wallpapers</label>
+          <input type="search" id="search-input" class="search-bar__input" placeholder="Search wallpapers..."
+            autocomplete="off" />
+        </div>
+        <button class="search-bar__btn" id="search-btn" aria-label="Search">
+          <svg class="icon--md" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round"
+              stroke-width="2" />
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- ========== CATEGORY PILLS ========== -->
+    <nav class="category-pills custom-scrollbar" aria-label="Wallpaper categories">
+      <ul class="category-pills__list" id="category-list" role="list">
+        <!-- Category buttons are rendered by JS (js/ui.js) -->
+      </ul>
+    </nav>
+
+    <!-- ========== FEATURED WALLPAPER ========== -->
+    <section class="featured-card" aria-label="Featured wallpaper" id="featured-section">
+      <div class="featured-card__container">
+        <img id="featured-image" class="featured-card__image"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1g9j58SFUJ7SO3XQ4uQBHts_D-9sv1RtpzD65r5bCYmAPXoE3P3okU2LmXI5fNIM2638J6kF_MD3pwJZrIHetWHPjCNyoEalyAuL865SulJtf4KfhL5nMjBtjP1KiLl2dYxbJhr2Gu_dIC5DmCchgc9YuN0698oxFsAy6gaWSSUrlGPQ2O-UZEX_eNv19_CYQogrT-46EMI68oBrFiw-LTwyLJnqMfXsiLLgrmOKOjLRBbiGPpORt"
+          alt="Mountain Sunrise — snow-capped peaks at dawn" loading="eager" />
+        <!-- Gradient overlay -->
+        <div class="featured-card__overlay" aria-hidden="true"></div>
+
+        <!-- Content -->
+        <div class="featured-card__content">
+          <div class="featured-card__body">
+            <span class="featured-badge">
+              <svg class="featured-badge__icon" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+              Featured
+            </span>
+            <h2 class="featured-card__title" id="featured-title">Mountain<br />Sunrise</h2>
+            <p class="featured-card__description" id="featured-description">Explore the majestic beauty of snow-capped
+              peaks at dawn 🌿</p>
+          </div>
+
+          <div class="featured-card__actions">
+            <button class="featured-card__view-btn" id="featured-view-btn" aria-label="View featured wallpaper">
+              View
+              <svg class="icon--sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+              </svg>
+            </button>
+            <button class="featured-card__download-btn" id="featured-download-btn"
+              aria-label="Download featured wallpaper">
+              <svg class="icon--md" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round"
+                  stroke-linejoin="round" stroke-width="2" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Pagination dots -->
+          <div class="featured-card__pagination" role="tablist" aria-label="Featured wallpaper slides">
+            <div class="pagination-dot pagination-dot--active" role="tab" aria-selected="true" aria-label="Slide 1">
+            </div>
+            <div class="pagination-dot pagination-dot--inactive" role="tab" aria-selected="false" aria-label="Slide 2">
+            </div>
+            <div class="pagination-dot pagination-dot--inactive" role="tab" aria-selected="false" aria-label="Slide 3">
+            </div>
+            <div class="pagination-dot pagination-dot--inactive" role="tab" aria-selected="false" aria-label="Slide 4">
+            </div>
+            <div class="pagination-dot pagination-dot--inactive" role="tab" aria-selected="false" aria-label="Slide 5">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== FILTER BAR ========== -->
+    <section class="filter-bar" aria-label="Gallery filters">
+      <!-- Orientation -->
+      <div class="filter-dropdown" role="button" tabindex="0" aria-haspopup="listbox"
+        aria-label="Filter by orientation">
+        <span class="filter-dropdown__label">Orientation</span>
+        <div class="filter-dropdown__value">
+          <span class="filter-dropdown__value-text" id="filter-orientation">All</span>
+          <svg class="filter-dropdown__chevron" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+            <path fill-rule="evenodd"
+              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+              clip-rule="evenodd" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Resolution -->
+      <div class="filter-dropdown" role="button" tabindex="0" aria-haspopup="listbox" aria-label="Filter by resolution">
+        <span class="filter-dropdown__label">Resolution</span>
+        <div class="filter-dropdown__value">
+          <span class="filter-dropdown__value-text" id="filter-resolution">All</span>
+          <svg class="filter-dropdown__chevron" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+            <path fill-rule="evenodd"
+              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+              clip-rule="evenodd" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Sort By -->
+      <div class="filter-dropdown" role="button" tabindex="0" aria-haspopup="listbox" aria-label="Sort wallpapers">
+        <span class="filter-dropdown__label">Sort By</span>
+        <div class="filter-dropdown__value">
+          <span class="filter-dropdown__value-text" id="filter-sort">Popular</span>
+          <svg class="filter-dropdown__chevron" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+            <path fill-rule="evenodd"
+              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+              clip-rule="evenodd" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Grid Toggle -->
+      <button class="filter-bar__grid-btn" aria-label="Toggle grid layout" id="grid-toggle-btn">
+        <svg class="icon--sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+        </svg>
+      </button>
+    </section>
+
+    <!-- ========== WALLPAPER GALLERY GRID ========== -->
+    <main>
+      <!-- Loading indicator (hidden by default) -->
+      <div id="loading-spinner" class="hidden" role="status" aria-live="polite">
+        <span class="sr-only">Loading wallpapers…</span>
+      </div>
+
+      <section class="wallpaper-grid" id="gallery" aria-label="Wallpaper gallery">
+        <!-- Wallpaper cards are rendered by JS (js/gallery.js) -->
+      </section>
+    </main>
+  </div>
+
+  <div id="screen-search" class="screen hidden"></div>
+  <div id="screen-favorites" class="screen hidden"></div>
+  <div id="screen-downloads" class="screen hidden"></div>
+  <div id="screen-download-details" class="screen hidden"></div>
+
+  <div id="screen-settings" class="screen hidden"></div>
+  <div id="screen-privacy-policy" class="screen hidden"></div>
+  <div id="screen-about-us" class="screen hidden"></div>
+  <div id="screen-terms-conditions" class="screen hidden"></div>
+
+  <!-- ========== BOTTOM NAVIGATION ========== -->
+  <nav class="bottom-nav" aria-label="Main navigation">
+    <div class="bottom-nav__inner">
+      <!-- Home (active) -->
+      <button class="nav-item nav-item--active" data-nav="home" aria-label="Home" aria-current="page">
+        <div class="nav-item__icon-wrapper">
+          <svg class="icon--md" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+          </svg>
+        </div>
+        <span class="nav-item__label">Home</span>
+      </button>
+
+      <!-- Search -->
+      <button class="nav-item" data-nav="search" aria-label="Search">
+        <div class="nav-item__icon-wrapper">
+          <svg class="icon--md" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round"
+              stroke-width="2" />
+          </svg>
+        </div>
+        <span class="nav-item__label">Search</span>
+      </button>
+
+      <!-- Favorites -->
+      <button class="nav-item" data-nav="favorites" aria-label="Favorites">
+        <div class="nav-item__icon-wrapper">
+          <svg class="icon--md" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+          </svg>
+        </div>
+        <span class="nav-item__label">Favorites</span>
+      </button>
+
+      <!-- Downloads -->
+      <button class="nav-item" data-nav="downloads" aria-label="Downloads">
+        <div class="nav-item__icon-wrapper">
+          <svg class="icon--md" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round"
+              stroke-linejoin="round" stroke-width="2" />
+          </svg>
+        </div>
+        <span class="nav-item__label">Downloads</span>
+      </button>
+
+      <!-- Settings -->
+      <button class="nav-item" data-nav="settings" aria-label="Settings">
+        <div class="nav-item__icon-wrapper">
+          <svg class="icon--md" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+              stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+            <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"
+              stroke-width="2" />
+          </svg>
+        </div>
+        <span class="nav-item__label">Settings</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ========== PREVIEW MODAL ========== -->
+  <div id="preview-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="preview-title">
+    <div class="modal__overlay" id="preview-overlay"></div>
+    <div class="modal__content">
+      <button class="modal__close-btn" id="preview-close-btn" aria-label="Close preview">
+        <svg class="icon--md" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+        </svg>
+      </button>
+
+      <div class="modal__image-container">
+        <img id="preview-image" src="" alt="" class="modal__image" />
+        <!-- Loading spinner for high-res image -->
+        <div id="preview-loading" class="modal__loading hidden">
+          <svg class="icon--lg animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="modal__details">
+        <div class="modal__info">
+          <h2 id="preview-title" class="modal__title">Wallpaper</h2>
+          <p id="preview-photographer" class="modal__subtitle">Photo by <a href="#" target="_blank"
+              rel="noopener noreferrer" id="preview-author-name" class="modal__link"></a></p>
+          <div class="modal__meta">
+            <span id="preview-resolution" class="modal__badge">4K</span>
+          </div>
+        </div>
+        <div class="modal__actions">
+          <button id="preview-favorite-btn" class="modal__btn modal__btn--icon" aria-label="Favorite">
+            <svg class="icon--md" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+            </svg>
+          </button>
+          <button id="preview-download-btn" class="modal__btn modal__btn--primary">
+            Download
+            <svg class="icon--sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke-linecap="round"
+                stroke-linejoin="round" stroke-width="2" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="modal__related hidden" id="preview-related-container">
+        <h3 class="modal__related-title">Related Wallpapers</h3>
+        <div class="modal__related-scroll" id="preview-related"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SCRIPTS ========== -->
+  <script defer src="js/utils.js"></script>
+  <script defer src="js/storage.js"></script>
+  <script defer src="js/ui.js"></script>
+  <script defer src="js/api.js"></script>
+  <script defer src="js/gallery.js"></script>
+  <script defer src="js/search.js"></script>
+  <script defer src="js/favorites.js"></script>
+  <script defer src="js/downloads.js"></script>
+  <script defer src="js/settings.js"></script>
+  <script defer src="js/privacy_policy_content.js"></script>
+  <script defer src="js/privacy_policy.js"></script>
+  <script defer src="js/about_us.js"></script>
+  <script defer src="js/terms_conditions_content.js"></script>
+  <script defer src="js/terms_conditions.js"></script>
+  <script defer src="js/filters.js"></script>
+  <script defer src="js/app.js"></script>
+</body>
+
+</html>

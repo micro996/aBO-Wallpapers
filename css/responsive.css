@@ -1,0 +1,118 @@
+/* ============================================================
+   Wallpaper App — Responsive Styles
+   ============================================================
+   Media queries for adapting layout across device sizes.
+   Mobile-first: base styles are for small phones,
+   breakpoints scale up for tablets and desktops.
+   ============================================================ */
+
+/* --- Small phones (default, no media query needed) --------- */
+/* All base styles in style.css and components.css already
+   target the smallest viewport. */
+
+/* --- Medium phones & up (≥ 400px) -------------------------- */
+@media (min-width: 400px) {
+  .wallpaper-grid {
+    gap: var(--space-4);
+    /* 16px — step up from 12px base */
+  }
+}
+
+/* --- Large phones & small tablets (≥ 640px) ----------------- */
+@media (min-width: 640px) {
+  .wallpaper-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .featured-card__container {
+    aspect-ratio: 21 / 9;
+  }
+
+  .featured-card__title {
+    font-size: 2.25rem;
+  }
+
+  .featured-card__description {
+    max-width: 300px;
+  }
+
+  .bottom-nav {
+    max-width: 28rem;
+  }
+}
+
+/* --- Tablets (≥ 768px) ------------------------------------- */
+@media (min-width: 768px) {
+  body {
+    padding-bottom: 7rem;
+  }
+
+  .app-header {
+    padding: var(--space-8) var(--space-8) var(--space-4);
+  }
+
+  .search-bar,
+  .category-pills,
+  .featured-card,
+  .filter-bar,
+  .wallpaper-grid {
+    padding-left: var(--space-8);
+    padding-right: var(--space-8);
+  }
+
+  .wallpaper-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+  }
+
+  .filter-bar {
+    max-width: 600px;
+  }
+}
+
+/* --- Small desktops (≥ 1024px) ----------------------------- */
+@media (min-width: 1024px) {
+  .wallpaper-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .search-bar__inner {
+    max-width: 480px;
+  }
+
+  .featured-card__container {
+    aspect-ratio: 3 / 1.5;
+  }
+
+  .bottom-nav {
+    max-width: 32rem;
+  }
+}
+
+/* --- Large desktops (≥ 1280px) ----------------------------- */
+@media (min-width: 1280px) {
+  .wallpaper-grid {
+    grid-template-columns: repeat(5, 1fr);
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .featured-card {
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* --- Reduced Motion ---------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
