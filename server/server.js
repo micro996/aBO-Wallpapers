@@ -81,6 +81,14 @@ app.use('/api/', apiLimiter);
 
 // Removed inline fetchUnsplash (now in providers/unsplash.js)
 
+// Health check route
+app.get("/", (req, res) => {
+  res.json({
+    status: "OK",
+    message: "ABO Wallpapers Backend is running 🚀"
+  });
+});
+
 // 4. Proxy Endpoints
 
 // Search Photos
