@@ -60,7 +60,7 @@ self.addEventListener('fetch', (event) => {
   const requestUrl = new URL(event.request.url);
 
   // 1. Backend API Requests (Stale-While-Revalidate)
-  if (requestUrl.origin === 'http://localhost:3000') {
+  if (requestUrl.origin === 'https://abo-wallpapers.onrender.com') {
     event.respondWith(
       caches.open(API_CACHE).then((cache) => {
         return cache.match(event.request).then((cachedResponse) => {

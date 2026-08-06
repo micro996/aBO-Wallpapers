@@ -8,7 +8,7 @@
 'use strict';
 
 const API = (() => {
-  const BASE_URL = 'http://127.0.0.1:3000/api';
+  const BASE_URL = 'https://abo-wallpapers.onrender.com/api';
   const DEFAULT_PER_PAGE = 30;
 
   const _activeRequests = new Map();
