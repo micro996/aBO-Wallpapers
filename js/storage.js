@@ -221,6 +221,12 @@ const Storage = (() => {
       _write(KEYS.CACHE, cache);
       return null;
     }
+    // Invalidate stale empty cache from previous bug
+    if (entry.data && entry.data.wallpapersToRender && entry.data.wallpapersToRender.length === 0) {
+      delete cache[key];
+      _write(KEYS.CACHE, cache);
+      return null;
+    }
     return entry.data;
   }
 
@@ -237,6 +243,12 @@ const Storage = (() => {
     if (!entry) return null;
     // Expire after 24 hours
     if (Date.now() - entry.timestamp > 24 * 60 * 60 * 1000) {
+      delete cache[key];
+      _write(KEYS.CATEGORY_CACHE, cache);
+      return null;
+    }
+    // Invalidate stale empty cache from previous bug
+    if (entry.data && entry.data.wallpapersToRender && entry.data.wallpapersToRender.length === 0) {
       delete cache[key];
       _write(KEYS.CATEGORY_CACHE, cache);
       return null;

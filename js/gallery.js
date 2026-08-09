@@ -209,7 +209,7 @@ const Gallery = (() => {
           page: currentPage,
           signal: currentAbortController.signal,
         };
-        if (filters.orientation) apiOptions.orientation = filters.orientation;
+        if (filters.orientation && filters.orientation !== 'any') apiOptions.orientation = filters.orientation;
         if (filters.sortBy) apiOptions.orderBy = filters.sortBy;
 
         const result = await API.searchWallpapers(currentQuery, apiOptions);
@@ -315,7 +315,7 @@ const Gallery = (() => {
         const apiOptions = {
           page: currentPage,
         };
-        if (currentFilters.orientation) apiOptions.orientation = currentFilters.orientation;
+        if (currentFilters.orientation && currentFilters.orientation !== 'any') apiOptions.orientation = currentFilters.orientation;
         if (currentFilters.sortBy) apiOptions.orderBy = currentFilters.sortBy;
 
         const result = await API.searchWallpapers(currentQuery, apiOptions);
