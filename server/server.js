@@ -50,6 +50,8 @@ app.use(express.urlencoded({ limit: '10kb', extended: true }));
 const allowedOrigins = [
   process.env.FRONTEND_URL,
   'https://abo-wallpapers-backend.onrender.com',
+  'http://localhost',
+  'capacitor://localhost',
   'http://localhost:8080',
   'http://127.0.0.1:8081',
   'http://127.0.0.1:5502',

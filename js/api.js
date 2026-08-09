@@ -32,13 +32,13 @@ const API = (() => {
     }
 
     const fetchPromise = (async () => {
-      // 5. Request Timeout (10 seconds)
+      // 5. Request Timeout (60 seconds)
       const timeoutController = new AbortController();
       let didTimeout = false;
       const timeoutId = setTimeout(() => {
         didTimeout = true;
         timeoutController.abort();
-      }, 10000);
+      }, 60000);
 
       const onUserAbort = () => timeoutController.abort();
       if (signal) {
@@ -64,20 +64,30 @@ const API = (() => {
         }
 
         if (!response.ok) {
-          if (response.status === 403) {
-            throw new Error('API rate limit exceeded. Please try again later.');
+          if (response.status === 404) {
+            throw new Error(`[API 404] Endpoint not found: ${endpoint}`);
+          } else if (response.status === 401 || response.status === 403) {
+            throw new Error(`[API 401/403] Authorization failed or rate limit exceeded.`);
+          } else if (response.status >= 500) {
+            throw new Error(`[API ${response.status}] Backend server error.`);
           }
           throw new Error(`API error: ${response.status} ${response.statusText}`);
         }
 
-        return await response.json();
+        try {
+          return await response.json();
+        } catch (jsonErr) {
+          throw new Error('[API Invalid JSON] Failed to parse backend response as JSON.');
+        }
       } catch (err) {
         clearTimeout(timeoutId);
         if (signal) signal.removeEventListener('abort', onUserAbort);
 
         if (didTimeout) {
-          err = new Error('Request timed out after 10 seconds.');
+          err = new Error('[API Timeout] Request timed out after 60 seconds.');
           err.name = 'TimeoutError';
+        } else if (err.message === 'Failed to fetch') {
+          err = new Error('[API Network/CORS] Failed to fetch. Check CORS or network connection.');
         }
 
         // 4. Retry Logic
