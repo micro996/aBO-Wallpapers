@@ -16,10 +16,38 @@ const Downloads = (() => {
    */
   async function startDownload(wallpaper) {
     const filename = toFilename(wallpaper.title);
-    UI.showToast('Starting download…');
-
+    
     // Save to history immediately
     Storage.addDownload(wallpaper);
+
+    const dialog = document.getElementById('download-dialog');
+    const content = document.getElementById('download-dialog-content');
+    
+    // Open Dialog: State 1 (Progress)
+    dialog.classList.remove('hidden');
+    content.innerHTML = `
+      <h2 class="download-dialog__title">Downloading...</h2>
+      <div class="download-dialog__progress-track">
+        <div class="download-dialog__progress-fill" id="dl-progress-fill"></div>
+      </div>
+      <p class="download-dialog__status" id="dl-progress-text">0%</p>
+    `;
+    
+    const fill = document.getElementById('dl-progress-fill');
+    const text = document.getElementById('dl-progress-text');
+    
+    let progress = 0;
+    
+    // Animate to 70% while preparing
+    const progressInterval = setInterval(() => {
+      progress += Math.floor(Math.random() * 10) + 5;
+      if (progress >= 70) {
+        progress = 70;
+        clearInterval(progressInterval);
+      }
+      fill.style.width = `${progress}%`;
+      text.textContent = `${progress}%`;
+    }, 100);
 
     try {
       // 1. Trigger Unsplash download tracking (required by API guidelines)
@@ -46,10 +74,55 @@ const Downloads = (() => {
       link.click();
       document.body.removeChild(link);
 
-      UI.showToast('Download started!');
+      // Finish progress
+      clearInterval(progressInterval);
+      fill.style.width = '100%';
+      text.textContent = '100%';
+      
+      // State 2 (Success)
+      setTimeout(() => {
+        content.innerHTML = `
+          <svg class="download-dialog__icon success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          <h2 class="download-dialog__title">Wallpaper Downloaded</h2>
+          <button class="download-dialog__btn" id="dl-open-btn">Open Downloads</button>
+        `;
+        document.getElementById('dl-open-btn').addEventListener('click', () => {
+          dialog.classList.add('hidden');
+          App.navigateTo('downloads');
+        });
+        
+        // Auto dismiss after 3s if user doesn't click
+        setTimeout(() => {
+          if (!dialog.classList.contains('hidden')) {
+            dialog.classList.add('hidden');
+          }
+        }, 3000);
+      }, 300);
+
     } catch (err) {
       console.error('[Downloads] Failed:', err);
-      UI.showToast('Download failed. Please try again.');
+      clearInterval(progressInterval);
+      
+      // State 3 (Failure)
+      content.innerHTML = `
+        <svg class="download-dialog__icon error" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <h2 class="download-dialog__title">Download Failed</h2>
+        <p class="download-dialog__status">Check your internet connection.</p>
+        <button class="download-dialog__btn" id="dl-retry-btn">Retry</button>
+      `;
+      
+      document.getElementById('dl-retry-btn').addEventListener('click', () => {
+        startDownload(wallpaper);
+      });
+      
+      // Allow clicking overlay to close on error
+      document.getElementById('download-dialog-overlay').onclick = () => {
+        dialog.classList.add('hidden');
+      };
     }
   }
 
@@ -75,6 +148,7 @@ const Downloads = (() => {
               </svg>
               <h2 class="empty-state__title">No Downloads Yet</h2>
               <p class="empty-state__description">Wallpapers you download will appear here.</p>
+              <button class="empty-state__btn" onclick="App.navigateTo('home')">Explore Wallpapers</button>
             </div>
           </main>
         </div>
@@ -308,14 +382,50 @@ const Downloads = (() => {
       }
     });
 
-    document.getElementById('details-share-btn').addEventListener('click', () => {
+    document.getElementById('details-share-btn').addEventListener('click', async () => {
       if (UI.hapticImpact) UI.hapticImpact();
       if (navigator.share) {
-        navigator.share({
-          title: wallpaper.title,
-          text: `Check out this wallpaper by ${wallpaper.photographer}`,
-          url: wallpaper.photographerUrl || wallpaper.url,
-        }).catch(console.error);
+        UI.showToast('Preparing image for sharing...');
+        
+        try {
+          // Attempt to fetch the actual image to share as a file
+          const imageUrl = wallpaper.downloadUrl || wallpaper.fullUrl || wallpaper.url;
+          if (!imageUrl) throw new Error('No image URL available');
+          
+          const response = await fetch(imageUrl);
+          if (!response.ok) throw new Error('Failed to fetch image');
+          
+          const blob = await response.blob();
+          const filename = (wallpaper.title ? wallpaper.title.replace(/[^a-z0-9]/gi, '_').toLowerCase() : 'wallpaper') + '.jpg';
+          const file = new File([blob], filename, { type: blob.type || 'image/jpeg' });
+          
+          // Check if file sharing is supported
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({
+              title: wallpaper.title || 'Wallpaper',
+              text: `Check out this wallpaper by ${wallpaper.photographer}`,
+              files: [file]
+            });
+            return; // Success
+          }
+        } catch (error) {
+          console.warn('[Downloads] Failed to share image file, falling back to URL sharing:', error);
+          if (error.message === 'Failed to fetch image') {
+            UI.showToast('Unable to locate the downloaded wallpaper. Please download it again.');
+            return;
+          }
+        }
+        
+        // Fallback to URL sharing if file sharing failed or is unsupported
+        try {
+          await navigator.share({
+            title: wallpaper.title || 'Wallpaper',
+            text: `Check out this wallpaper by ${wallpaper.photographer}`,
+            url: wallpaper.photographerUrl || wallpaper.url,
+          });
+        } catch (fallbackError) {
+          console.error('[Downloads] Fallback share failed:', fallbackError);
+        }
       } else {
         UI.showToast('Share not supported on this browser');
       }
@@ -323,12 +433,42 @@ const Downloads = (() => {
 
     document.getElementById('details-remove-btn').addEventListener('click', () => {
       if (UI.hapticImpact) UI.hapticImpact();
-      if (confirm('Remove this wallpaper from download history?')) {
+      
+      const modal = document.getElementById('confirm-delete-modal');
+      const cancelBtn = document.getElementById('confirm-delete-cancel');
+      const removeBtn = document.getElementById('confirm-delete-remove');
+      const overlay = document.getElementById('confirm-delete-overlay');
+      
+      // Setup close function
+      const closeModal = () => {
+        modal.classList.add('hidden');
+        // Clean up listeners so they don't stack up
+        cancelBtn.removeEventListener('click', closeModal);
+        overlay.removeEventListener('click', closeModal);
+        document.removeEventListener('keydown', handleEsc);
+        removeBtn.replaceWith(removeBtn.cloneNode(true)); // Easy way to clear remove listeners
+      };
+
+      const handleEsc = (e) => {
+        if (e.key === 'Escape') closeModal();
+      };
+
+      // Bind listeners
+      cancelBtn.addEventListener('click', closeModal);
+      overlay.addEventListener('click', closeModal);
+      document.addEventListener('keydown', handleEsc);
+      
+      // Remove Action
+      removeBtn.addEventListener('click', () => {
         Storage.removeDownload(wallpaper.id);
+        closeModal();
         closeDetails();
-        UI.showToast('Removed from history');
+        UI.showToast('✅ Removed from Downloads');
         renderScreen(); // Re-render the downloads list to reflect deletion
-      }
+      }, { once: true });
+
+      // Show modal
+      modal.classList.remove('hidden');
     });
 
     ['details-set-home-btn', 'details-set-lock-btn', 'details-set-both-btn'].forEach(id => {

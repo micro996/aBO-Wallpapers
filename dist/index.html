@@ -9,12 +9,19 @@
   <meta name="theme-color" content="#0F172A" />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Wallpaper Gallery — Discover & Download HD Wallpapers" />
+  <meta property="og:title" content="ABO — Discover & Download HD Wallpapers" />
   <meta property="og:description"
     content="Browse and download free high-quality wallpapers for your phone and desktop." />
   <meta property="og:type" content="website" />
 
-  <title>Wallpaper Gallery — Discover & Download HD Wallpapers</title>
+  <title>ABO — Discover & Download HD Wallpapers</title>
+
+  <!-- Web Branding Icons -->
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192x192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon-512x512.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
 
   <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -24,40 +31,113 @@
   <!-- Stylesheets -->
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/splash.css" />
   <link rel="stylesheet" href="css/responsive.css" />
 </head>
 
 <body>
 
+  <!-- ========== SPLASH SCREEN ========== -->
+  <div id="app-splash" aria-hidden="false">
+    <div class="splash__camera">
+      <!-- WebGL Canvas replaces CSS stars and shooting star -->
+      <canvas class="splash__webgl-canvas" id="bg-canvas"></canvas>
+    </div>
+
+    <!-- Phase 2: Static Image Screen -->
+    <div class="splash__static-image hidden">
+      <main class="splash__main-content">
+        <!-- Spacer for vertical alignment center -->
+        <div class="splash__spacer"></div>
+
+        <!-- BEGIN: Logo Section -->
+        <section class="splash__logo-section">
+          <div aria-label="ABO Logo" class="splash__logo-container">
+            <svg width="340" height="140" viewBox="0 0 340 140" fill="none" xmlns="http://www.w3.org/2000/svg"
+              class="splash__logo-svg">
+              <defs>
+                <linearGradient id="o-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#00f0ff"></stop>
+                  <stop offset="100%" stop-color="#b700ff"></stop>
+                </linearGradient>
+                <filter id="neon-glow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="6" result="blur"></feGaussianBlur>
+                  <feComposite in="SourceGraphic" in2="blur" operator="over"></feComposite>
+                </filter>
+              </defs>
+              <g fill="white">
+                <!-- A left leg -->
+                <polygon points="10,115 70,15 90,15 30,115" />
+                <!-- A right leg -->
+                <polygon points="70,15 90,15 150,115 130,115" />
+                <!-- B top bar -->
+                <rect x="90" y="15" width="70" height="16" />
+                <!-- A crossbar / B middle bar -->
+                <rect x="55" y="55" width="105" height="16" />
+                <!-- B bottom bar -->
+                <rect x="130" y="99" width="30" height="16" />
+                <!-- B top lobe -->
+                <path fill-rule="evenodd"
+                  d="M 160 15 H 175 C 200 15, 215 25, 215 43 C 215 61, 200 71, 175 71 H 160 Z M 160 31 V 55 H 170 C 185 55, 195 50, 195 43 C 195 36, 185 31, 170 31 Z" />
+                <!-- B bottom lobe -->
+                <path fill-rule="evenodd"
+                  d="M 160 55 H 180 C 210 55, 225 65, 225 85 C 225 105, 210 115, 180 115 H 160 Z M 160 71 V 99 H 175 C 195 99, 205 94, 205 85 C 205 76, 195 71, 175 71 Z" />
+              </g>
+              <circle cx="280" cy="65" r="42" stroke="url(#o-gradient)" stroke-width="14" fill="none"
+                filter="url(#neon-glow)"></circle>
+            </svg>
+          </div>
+          <h1 class="splash__title">WALLPAPERS</h1>
+          <h2 class="splash__subtitle text-gradient">BEYOND IMAGINATION</h2>
+        </section>
+
+        <!-- Spacer -->
+        <div class="splash__spacer"></div>
+
+        <!-- BEGIN: Loading Section -->
+        <section class="splash__loading-section">
+          <div aria-label="Loading progress" class="splash__progress-container">
+            <div class="progress-track">
+              <div class="progress-fill">
+                <div class="progress-indicator"></div>
+              </div>
+            </div>
+          </div>
+          <p class="splash__loading-text">Loading...</p>
+        </section>
+      </main>
+
+      <div class="sr-only">
+        <h1>ABO Wallpapers</h1>
+        <p>Explore. Beautify. Inspire.</p>
+      </div>
+    </div>
+  </div>
+
   <!-- ========== SCREENS ========== -->
   <div id="screen-home" class="screen active">
+
+    <!-- Pull to Refresh Spinner -->
+    <div id="ptr-spinner" class="pull-to-refresh-spinner hidden">
+      <svg class="ptr-spinner__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+      </svg>
+    </div>
+
     <!-- ========== APP HEADER ========== -->
     <header class="app-header" role="banner">
       <div class="app-header__inner">
-        <!-- Menu Button -->
-        <button class="app-header__icon-btn" aria-label="Open menu" id="menu-btn">
-          <svg class="icon--lg" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-          </svg>
-        </button>
-
         <!-- Title -->
-        <div>
-          <h1 class="app-header__title">
-            Wallpaper <span class="app-header__title-accent">Gallery</span>
-          </h1>
-          <p class="app-header__subtitle">discover &amp; download</p>
+        <div class="app-header__branding" style="display: flex; align-items: center; gap: 0.5rem;">
+          <div style="margin-top: 4px;">
+            <h1 class="app-header__title" style="margin: 0; line-height: 1.1;">
+              aBO <span class="app-header__title-accent">Wallpapers</span>
+            </h1>
+            <p class="app-header__subtitle" style="margin: 0;">discover &amp; download</p>
+          </div>
         </div>
 
-        <!-- Notification Button -->
-        <button class="app-header__icon-btn" aria-label="Notifications" id="notification-btn">
-          <svg class="icon--md" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-              stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-          </svg>
-          <span class="app-header__notification-dot" aria-hidden="true"></span>
-        </button>
       </div>
     </header>
 
@@ -68,6 +148,7 @@
           <label for="search-input" class="sr-only">Search wallpapers</label>
           <input type="search" id="search-input" class="search-bar__input" placeholder="Search wallpapers..."
             autocomplete="off" />
+          <div id="search-suggestions-container" class="search-suggestions hidden"></div>
         </div>
         <button class="search-bar__btn" id="search-btn" aria-label="Search">
           <svg class="icon--md" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -76,6 +157,7 @@
           </svg>
         </button>
       </div>
+      <div id="search-helper-message" class="search-helper hidden">Choose filters below, then tap Search.</div>
     </section>
 
     <!-- ========== CATEGORY PILLS ========== -->
@@ -88,9 +170,11 @@
     <!-- ========== FEATURED WALLPAPER ========== -->
     <section class="featured-card" aria-label="Featured wallpaper" id="featured-section">
       <div class="featured-card__container">
-        <img id="featured-image" class="featured-card__image"
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1g9j58SFUJ7SO3XQ4uQBHts_D-9sv1RtpzD65r5bCYmAPXoE3P3okU2LmXI5fNIM2638J6kF_MD3pwJZrIHetWHPjCNyoEalyAuL865SulJtf4KfhL5nMjBtjP1KiLl2dYxbJhr2Gu_dIC5DmCchgc9YuN0698oxFsAy6gaWSSUrlGPQ2O-UZEX_eNv19_CYQogrT-46EMI68oBrFiw-LTwyLJnqMfXsiLLgrmOKOjLRBbiGPpORt"
-          alt="Mountain Sunrise — snow-capped peaks at dawn" loading="eager" />
+        <div class="featured-card__track">
+          <img src="" alt="" class="featured-card__image" id="featured-image-1" loading="eager" />
+          <img src="" alt="" class="featured-card__image" id="featured-image-2" loading="eager"
+            style="display: none;" />
+        </div>
         <!-- Gradient overlay -->
         <div class="featured-card__overlay" aria-hidden="true"></div>
 
@@ -110,12 +194,7 @@
           </div>
 
           <div class="featured-card__actions">
-            <button class="featured-card__view-btn" id="featured-view-btn" aria-label="View featured wallpaper">
-              View
-              <svg class="icon--sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-              </svg>
-            </button>
+
             <button class="featured-card__download-btn" id="featured-download-btn"
               aria-label="Download featured wallpaper">
               <svg class="icon--md" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -207,7 +286,6 @@
     </main>
   </div>
 
-  <div id="screen-search" class="screen hidden"></div>
   <div id="screen-favorites" class="screen hidden"></div>
   <div id="screen-downloads" class="screen hidden"></div>
   <div id="screen-download-details" class="screen hidden"></div>
@@ -301,6 +379,18 @@
               d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
         </div>
+        <!-- Swipe Tutorial Overlay -->
+        <div id="swipe-tutorial" class="swipe-tutorial hidden">
+          <svg class="swipe-tutorial__arrow swipe-tutorial__arrow--left" fill="none" stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          <div class="swipe-tutorial__text">Swipe left or right to browse</div>
+          <svg class="swipe-tutorial__arrow swipe-tutorial__arrow--right" fill="none" stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
       </div>
 
       <div class="modal__details">
@@ -336,13 +426,39 @@
     </div>
   </div>
 
+  <!-- ========== DOWNLOAD DIALOG ========== -->
+  <div id="download-dialog" class="modal hidden" aria-hidden="true" role="dialog">
+    <div class="modal__overlay" id="download-dialog-overlay" tabindex="-1"></div>
+    <div class="modal__container" role="document">
+      <div class="download-dialog__content" id="download-dialog-content">
+        <!-- JS dynamically renders progress, success, or error states here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== CONFIRM DELETE MODAL ========== -->
+  <div id="confirm-delete-modal" class="modal hidden" aria-hidden="true" role="dialog">
+    <div class="modal__overlay" id="confirm-delete-overlay" tabindex="-1"></div>
+    <div class="modal__container" role="document">
+      <div class="confirm-modal__content">
+        <h2 class="confirm-modal__title">🗑️ Delete Download?</h2>
+        <p class="confirm-modal__message">This will remove this wallpaper from your download history. The downloaded
+          file on your device will not be deleted.</p>
+        <div class="confirm-modal__actions">
+          <button id="confirm-delete-cancel" class="confirm-modal__btn confirm-modal__btn--secondary">Cancel</button>
+          <button id="confirm-delete-remove" class="confirm-modal__btn confirm-modal__btn--destructive">Remove</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ========== SCRIPTS ========== -->
   <script defer src="js/utils.js"></script>
   <script defer src="js/storage.js"></script>
+  <script defer src="js/splash-webgl.js"></script>
   <script defer src="js/ui.js"></script>
   <script defer src="js/api.js"></script>
   <script defer src="js/gallery.js"></script>
-  <script defer src="js/search.js"></script>
   <script defer src="js/favorites.js"></script>
   <script defer src="js/downloads.js"></script>
   <script defer src="js/settings.js"></script>
@@ -352,6 +468,7 @@
   <script defer src="js/terms_conditions_content.js"></script>
   <script defer src="js/terms_conditions.js"></script>
   <script defer src="js/filters.js"></script>
+  <script defer src="js/search_suggestions.js"></script>
   <script defer src="js/app.js"></script>
 </body>
 

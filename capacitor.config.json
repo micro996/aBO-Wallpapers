@@ -1,5 +1,10 @@
 {
   "appId": "com.wallpaper.gallery",
   "appName": "Wallpaper Gallery",
-  "webDir": "dist"
+  "webDir": "dist",
+  "plugins": {
+    "StatusBar": {
+      "hidden": true
+    }
+  }
 }

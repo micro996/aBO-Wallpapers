@@ -41,15 +41,27 @@ const HomeFilters = (() => {
     const searchInput = document.getElementById('search-input');
     if (!searchInput) return;
 
-    searchInput.addEventListener('input', debounce((e) => {
-      state.query = e.target.value.trim();
-      _triggerGalleryUpdate();
-    }, 500));
+    const helperMsg = document.getElementById('search-helper-message');
+
+    // Phase 4.7 - Typing State and Clearing Search
+    searchInput.addEventListener('input', () => {
+      const val = searchInput.value.trim();
+
+      if (val === '') {
+        // Clear search -> Instantly restore home
+        App.resetToHome();
+        if (helperMsg) helperMsg.classList.add('hidden');
+      } else {
+        // Typing -> show helper message
+        if (helperMsg) helperMsg.classList.remove('hidden');
+      }
+    });
 
     searchInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
         state.query = searchInput.value.trim();
+        if (state.query) Storage.addRecentSearch(state.query);
         _triggerGalleryUpdate();
       }
     });
@@ -58,6 +70,7 @@ const HomeFilters = (() => {
     if (searchBtn) {
       searchBtn.addEventListener('click', () => {
         state.query = searchInput.value.trim();
+        if (state.query) Storage.addRecentSearch(state.query);
         _triggerGalleryUpdate();
       });
     }
@@ -109,7 +122,11 @@ const HomeFilters = (() => {
         buttonEl.classList.remove('active');
         menu.classList.remove('active');
 
-        _triggerGalleryUpdate();
+        // Phase 4.10 - Auto-refresh if a search is active
+        const isSearching = !!state.query && state.query.toLowerCase() !== 'nature';
+        if (isSearching) {
+          _triggerGalleryUpdate();
+        }
       });
       menu.appendChild(item);
     });
@@ -133,6 +150,10 @@ const HomeFilters = (() => {
   }
 
   function _triggerGalleryUpdate() {
+    // Phase 4.7 - Hide helper message on execute
+    const helperMsg = document.getElementById('search-helper-message');
+    if (helperMsg) helperMsg.classList.add('hidden');
+
     Gallery.loadWithFilters(state);
   }
 
@@ -148,9 +169,18 @@ const HomeFilters = (() => {
     return { ...state };
   }
 
+  function executeSearch(query) {
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) searchInput.value = query;
+    state.query = query;
+    if (query) Storage.addRecentSearch(query);
+    _triggerGalleryUpdate();
+  }
+
   return {
     init,
     getState,
-    setQuery
+    setQuery,
+    executeSearch
   };
 })();

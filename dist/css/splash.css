@@ -1,0 +1,240 @@
+/* 
+  Cinematic Premium Splash Screen
+  Duration: ~10s
+  Easing: cubic-bezier(0.4, 0, 0.2, 1) - Material standard
+*/
+
+#app-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: #020306;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: #fff;
+  transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
+}
+
+#app-splash.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Scene 1 & 4: Camera */
+.splash__camera {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* Removed cameraZoomIn animation as requested */
+  transform: scale(1.0);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* WebGL Canvas Background */
+.splash__webgl-canvas {
+  position: absolute;
+  inset: -20%;
+  width: 140%;
+  height: 140%;
+  z-index: 1;
+  opacity: 0;
+  animation: starsFade 2s ease-in-out forwards;
+}
+
+/* Center Content */
+.splash__content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -10vh;
+}
+
+@keyframes mountainReveal {
+  0% { 
+    opacity: 0;
+    transform: translateY(30px) scale(1.05);
+  }
+  100% { 
+    opacity: 1;
+    transform: translateY(0px) scale(1);
+  }
+}
+
+@keyframes starsFade {
+  0% { opacity: 0; }
+  100% { opacity: 0.8; }
+}
+
+@keyframes bgFadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Phase 2: Static Image Screen */
+.splash__static-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100dvh; /* Modern viewport unit for mobile browsers */
+  opacity: 1;
+  transition: opacity 0.8s ease-in-out;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #050616;
+  background-image: radial-gradient(circle at center, #111438 0%, #02020a 60%);
+}
+
+/* --- New Splash UI Layout & Elements --- */
+.splash__main-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 28rem;
+  height: 100%;
+  padding: 5rem 2rem;
+  position: relative;
+  z-index: 10;
+}
+
+.splash__spacer {
+  flex-grow: 1;
+}
+
+.splash__logo-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 4rem;
+  width: 100%;
+}
+
+.splash__logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.splash__logo-svg {
+  width: 100%;
+  max-width: 280px;
+}
+
+.splash__title {
+  color: white;
+  letter-spacing: 0.5em;
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+}
+
+.splash__subtitle {
+  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.text-gradient {
+  background: linear-gradient(to right, #00f0ff, #b700ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.splash__loading-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  padding: 0 1rem;
+}
+
+.splash__progress-container {
+  width: 100%;
+  max-width: 280px;
+  margin-bottom: 1.5rem;
+}
+
+.progress-track {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  height: 8px;
+  width: 100%;
+  position: relative;
+}
+
+.progress-fill {
+  background: linear-gradient(to right, #00f0ff, #b700ff);
+  height: 100%;
+  border-radius: 10px;
+  width: 50%;
+  position: relative;
+}
+
+.progress-indicator {
+  width: 14px;
+  height: 14px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  right: -7px;
+  top: -3px;
+  box-shadow: 0 0 8px rgba(255,255,255,0.8);
+}
+
+.splash__loading-text {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  font-weight: 300;
+}
+
+/* Art Direction for Mobile Devices */
+@media (max-width: 768px) {
+  .splash__static-image {
+    /* Shifts the focal point slightly on tall screens so the lake/mountains are better framed */
+    background-position: 70% center;
+  }
+}
+
+.splash__static-image.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Accessibility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

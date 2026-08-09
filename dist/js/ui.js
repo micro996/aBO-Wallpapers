@@ -93,12 +93,15 @@ const UI = (() => {
     }
 
     // Handle broken images
-    img.addEventListener('error', () => {
-      img.src = '';
+    const handleError = () => {
+      img.removeEventListener('error', handleError);
+      img.removeAttribute('src'); // Prevent broken image icon
+      img.style.display = 'none'; // Hide element
       img.alt = 'Image failed to load';
       img.classList.add('loaded'); // Remove skeleton state
       card.style.backgroundColor = 'var(--color-bg-secondary)';
-    });
+    };
+    img.addEventListener('error', handleError);
 
     // Gradient overlay
     const overlay = document.createElement('div');
@@ -138,6 +141,52 @@ const UI = (() => {
     return card;
   }
 
+  /**
+   * Updates an existing wallpaper card with new data.
+   * @param {HTMLDivElement} card 
+   * @param {Object} wallpaper 
+   */
+  function updateWallpaperCard(card, wallpaper) {
+    card.style.display = ''; // Ensure it's visible if previously hidden by empty states
+    card.__wallpaperData = wallpaper;
+    card.setAttribute('data-id', wallpaper.id);
+    card.setAttribute('aria-label', wallpaper.title);
+
+    // Image
+    const img = card.querySelector('.wallpaper-card__image');
+    if (img && img.src !== wallpaper.url) {
+      img.classList.remove('loaded');
+      img.src = wallpaper.url;
+      img.alt = wallpaper.title;
+      // load event listener will fire again automatically when src loads
+    }
+
+    // Favorite button
+    const favBtn = card.querySelector('.wallpaper-card__favorite-btn');
+    if (favBtn) {
+      const isFav = Storage.isFavorite(wallpaper.id);
+      if (isFav) {
+        favBtn.classList.add('wallpaper-card__favorite-btn--active');
+        favBtn.setAttribute('aria-label', 'Remove from favorites');
+      } else {
+        favBtn.classList.remove('wallpaper-card__favorite-btn--active');
+        favBtn.setAttribute('aria-label', 'Add to favorites');
+      }
+    }
+
+    // Resolution badge
+    const resText = card.querySelector('.wallpaper-card__resolution-text');
+    if (resText) {
+      resText.textContent = wallpaper.resolution || '4K';
+    }
+
+    // Download button
+    const dlBtn = card.querySelector('.wallpaper-card__download-btn');
+    if (dlBtn) {
+      dlBtn.setAttribute('aria-label', `Download ${wallpaper.title}`);
+    }
+  }
+
   /* --- Skeleton Card -------------------------------------- */
 
   /**
@@ -173,7 +222,7 @@ const UI = (() => {
    * @param {string} message
    * @param {number} [duration=3000] - Display duration in ms.
    */
-  function showToast(message, duration = 3000) {
+  function showToast(message, duration = null) {
     let toast = document.getElementById('toast');
     if (!toast) {
       toast = document.createElement('div');
@@ -185,6 +234,17 @@ const UI = (() => {
     }
 
     toast.textContent = message;
+    
+    // Adaptive duration if not provided
+    if (duration === null) {
+      const lowerMsg = message.toLowerCase();
+      const isError = lowerMsg.includes('error') || lowerMsg.includes('fail') || lowerMsg.includes('unable') || lowerMsg.includes('check');
+      duration = isError ? 4000 : 3000;
+    }
+
+    // Force reflow to restart animation if already visible
+    toast.classList.remove('toast--visible');
+    void toast.offsetWidth;
     toast.classList.add('toast--visible');
 
     clearTimeout(toastTimer);
@@ -238,14 +298,14 @@ const UI = (() => {
 
   function navigatePreview(direction) {
     if (!currentPreviewCard) return;
-    
+
     let sibling = direction === 'next' ? currentPreviewCard.nextElementSibling : currentPreviewCard.previousElementSibling;
-    
+
     // Skip non-wallpaper-card elements
     while (sibling && !sibling.classList.contains('wallpaper-card')) {
       sibling = direction === 'next' ? sibling.nextElementSibling : sibling.previousElementSibling;
     }
-    
+
     if (sibling && sibling.__wallpaperData) {
       openPreview(sibling.__wallpaperData);
     } else {
@@ -282,7 +342,7 @@ const UI = (() => {
       const container = img.parentElement;
       const maxX = (container.clientWidth * currentScale - container.clientWidth) / 2;
       const maxY = (container.clientHeight * currentScale - container.clientHeight) / 2;
-      
+
       currentX = Math.max(-maxX, Math.min(maxX, currentX));
       currentY = Math.max(-maxY, Math.min(maxY, currentY));
     }
@@ -293,13 +353,19 @@ const UI = (() => {
       } else {
         img.style.transition = 'none';
       }
-      
+
       requestAnimationFrame(() => {
         img.style.transform = `translate(${currentX}px, ${currentY}px) scale(${currentScale})`;
       });
     }
 
     img.addEventListener('touchstart', (e) => {
+      const tutorial = document.getElementById('swipe-tutorial');
+      if (tutorial && tutorial.classList.contains('visible')) {
+        tutorial.classList.remove('visible');
+        setTimeout(() => tutorial.classList.add('hidden'), 500);
+      }
+
       if (e.touches.length === 2) {
         isScaling = true;
         isPanning = false;
@@ -350,6 +416,15 @@ const UI = (() => {
 
       if (wasSwiping) {
         const threshold = 50;
+        if (Math.abs(finalX) > threshold) {
+          // Mark successful swipe
+          let state = JSON.parse(localStorage.getItem('wallpaper_swipe_tutorial') || '{"opens":0, "success":false}');
+          if (!state.success) {
+            state.success = true;
+            localStorage.setItem('wallpaper_swipe_tutorial', JSON.stringify(state));
+          }
+        }
+
         if (finalX < -threshold) {
           navigatePreview('next');
           return;
@@ -366,14 +441,14 @@ const UI = (() => {
       } else if (currentScale > MAX_SCALE) {
         currentScale = MAX_SCALE;
       }
-      
+
       if (currentScale === MIN_SCALE) {
         currentX = 0;
         currentY = 0;
       } else {
         clampPan();
       }
-      
+
       updateTransform(true);
 
       if (e.changedTouches.length === 1) {
@@ -381,7 +456,7 @@ const UI = (() => {
 
         const currentTime = new Date().getTime();
         const tapLength = currentTime - lastTapTime;
-        
+
         if (tapLength < 300 && tapLength > 0) {
           if (currentScale > 1) {
             resetZoom();
@@ -394,7 +469,7 @@ const UI = (() => {
         lastTapTime = currentTime;
       }
     });
-    
+
     img.addEventListener('dblclick', () => {
       if (currentScale > 1) {
         resetZoom();
@@ -457,6 +532,24 @@ const UI = (() => {
     }
     res.textContent = wallpaper.resolution;
 
+    // Optional Source Badge (Debug/Attribution)
+    const SHOW_SOURCE_BADGE = localStorage.getItem('debug_source') === 'true';
+    let badge = document.getElementById('preview-source-badge');
+    if (SHOW_SOURCE_BADGE) {
+      if (!badge) {
+        badge = document.createElement('span');
+        badge.id = 'preview-source-badge';
+        badge.className = 'modal__badge provider-badge';
+        res.parentNode.appendChild(badge);
+      }
+      // Capitalize first letter
+      const sourceName = wallpaper.source ? wallpaper.source.charAt(0).toUpperCase() + wallpaper.source.slice(1) : 'Unknown';
+      badge.textContent = `Source: ${sourceName}`;
+      badge.style.display = 'inline-block';
+    } else if (badge) {
+      badge.style.display = 'none';
+    }
+
     // Extra details section removed per Phase 5.4.1
 
     // Reset image and show loading
@@ -465,15 +558,37 @@ const UI = (() => {
     if (loading) loading.classList.remove('hidden');
     resetZoom();
 
-    // Load full image — use addEventListener to prevent leaks
+    // Swipe Tutorial Logic
+    const tutorial = document.getElementById('swipe-tutorial');
+    if (tutorial) {
+      let state = JSON.parse(localStorage.getItem('wallpaper_swipe_tutorial') || '{"opens":0, "success":false}');
+      if (!state.success && state.opens < 3) {
+        state.opens += 1;
+        localStorage.setItem('wallpaper_swipe_tutorial', JSON.stringify(state));
+
+        tutorial.classList.remove('hidden');
+        setTimeout(() => tutorial.classList.add('visible'), 50);
+
+        if (window._tutorialTimeout) clearTimeout(window._tutorialTimeout);
+        window._tutorialTimeout = setTimeout(() => {
+          tutorial.classList.remove('visible');
+          setTimeout(() => tutorial.classList.add('hidden'), 500);
+        }, 2500);
+      } else {
+        tutorial.classList.remove('visible');
+        tutorial.classList.add('hidden');
+      }
+    }
+
+    // Load full image — use img.onload to prevent listener stacking
     const onLoad = () => {
       // Prevent stale events if user swiped quickly
       if (img.src !== wallpaper.fullUrl) return;
       if (loading) loading.classList.add('hidden');
       img.classList.add('loaded');
-      img.removeEventListener('load', onLoad);
+      img.onload = null;
     };
-    img.addEventListener('load', onLoad);
+    img.onload = onLoad;
     img.src = wallpaper.fullUrl;
 
     // Silently preload next image for smoother swiping
@@ -516,11 +631,11 @@ const UI = (() => {
     // Fetch related wallpapers
     const relatedContainer = document.getElementById('preview-related-container');
     const relatedScroll = document.getElementById('preview-related');
-    
+
     if (relatedContainer && relatedScroll) {
       relatedContainer.classList.remove('hidden');
       relatedScroll.innerHTML = '';
-      
+
       // Add skeletons
       for (let i = 0; i < 4; i++) {
         const skeleton = createSkeletonCard();
@@ -528,11 +643,11 @@ const UI = (() => {
         skeleton.style.height = '180px';
         relatedScroll.appendChild(skeleton);
       }
-      
+
       API.getRelatedWallpapers(wallpaper, 8).then(relatedWallpapers => {
         // Double check if modal is still open and showing the same wallpaper
         if (currentPreviewCard && currentPreviewCard.__wallpaperData && currentPreviewCard.__wallpaperData.id !== wallpaper.id) return;
-        
+
         relatedScroll.innerHTML = '';
         if (relatedWallpapers.length === 0) {
           relatedScroll.innerHTML = '<p style="color: var(--color-text-muted); font-size: var(--font-size-sm); padding: var(--space-2) 0;">No related wallpapers found.</p>';
@@ -563,6 +678,11 @@ const UI = (() => {
     const modal = document.getElementById('preview-modal');
     if (modal) {
       modal.classList.add('hidden');
+      const img = modal.querySelector('.preview-modal__image');
+      if (img) {
+        img.removeAttribute('src'); // cleanup memory
+        img.classList.remove('loaded');
+      }
     }
     // Always restore scroll — safety guard against stuck overflow
     document.body.style.overflow = '';
@@ -573,6 +693,7 @@ const UI = (() => {
   return {
     createCategoryPill,
     createWallpaperCard,
+    updateWallpaperCard,
     createSkeletonCard,
     showToast,
     showLoading,

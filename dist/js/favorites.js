@@ -66,6 +66,7 @@ const Favorites = (() => {
           </svg>
           <h2 class="empty-state__title">No Favorites Yet</h2>
           <p class="empty-state__description">Wallpapers you favorite will appear here.</p>
+          <button class="empty-state__btn" onclick="App.navigateTo('home')">Explore Wallpapers</button>
         </div>
       `;
     } else {

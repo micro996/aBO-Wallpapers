@@ -177,6 +177,11 @@ const Gallery = (() => {
     currentAbortController = new AbortController();
     UI.showLoading();
 
+    // Immediately clear any empty state so it doesn't linger during fetch
+    const existingEmpty = galleryEl.querySelector('.empty-state');
+    if (existingEmpty) existingEmpty.remove();
+
+
     try {
       const cacheInfo = _getCacheKey(currentQuery, currentFilters, currentPage);
       const cached = cacheInfo.isCategory 

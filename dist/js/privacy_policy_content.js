@@ -31,9 +31,6 @@ const PrivacyPolicyContent = (() => {
 
     <h2>5. Updates to this Policy</h2>
     <p>We may update this Privacy Policy from time to time to reflect changes in our practices or legal obligations. We recommend reviewing this section periodically for updates.</p>
-
-    <h2>6. Contact Us</h2>
-    <p>If you have any questions or feedback regarding this Privacy Policy, you can reach out to us at <strong>support@example.com</strong> or visit our website at <strong>https://example.com</strong>.</p>
   `;
 
   function getHTML() {

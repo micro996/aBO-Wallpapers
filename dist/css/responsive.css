@@ -13,7 +13,8 @@
 /* --- Medium phones & up (≥ 400px) -------------------------- */
 @media (min-width: 400px) {
   .wallpaper-grid {
-    gap: var(--space-4); /* 16px — step up from 12px base */
+    gap: var(--space-4);
+    /* 16px — step up from 12px base */
   }
 }
 
@@ -80,7 +81,7 @@
   }
 
   .featured-card__container {
-    aspect-ratio: 3 / 1;
+    aspect-ratio: 3 / 1.5;
   }
 
   .bottom-nav {
@@ -106,6 +107,7 @@
 
 /* --- Reduced Motion ---------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {

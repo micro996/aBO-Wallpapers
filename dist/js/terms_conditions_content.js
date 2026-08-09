@@ -47,7 +47,7 @@ const TermsConditionsContent = (() => {
     <p>We reserve the right to modify these Terms at any time. Any changes will be posted here with an updated "Last Updated" date. Your continued use of the Application constitutes acceptance of the new terms.</p>
 
     <h2>12. Contact Information</h2>
-    <p>For any questions regarding these Terms & Conditions, please contact us at <strong>support@example.com</strong>.</p>
+    <p>For any questions regarding these Terms & Conditions, please visit our website at <strong><a href="https://example.com" target="_blank" rel="noopener noreferrer">https://example.com</a></strong>.</p>
   `;
 
   function getHTML() {

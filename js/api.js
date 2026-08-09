@@ -104,6 +104,10 @@ const API = (() => {
    * @returns {Object} Normalized wallpaper object.
    */
   function _normalizePhoto(photo, category, index) {
+    let orientation = 'squarish';
+    if (photo.width > photo.height) orientation = 'landscape';
+    else if (photo.height > photo.width) orientation = 'portrait';
+
     return {
       id: photo.id,
       url: photo.urls.small,        // Small for grid thumbnails
@@ -114,6 +118,7 @@ const API = (() => {
       resolution: `${photo.width}x${photo.height}`,
       width: photo.width,
       height: photo.height,
+      orientation,
       downloadLocation: photo.links.download_location,
       photographer: photo.user.name,
       photographerUrl: photo.user.links.html,
@@ -158,10 +163,11 @@ const API = (() => {
       order_by: orderBy,
     }, signal);
 
+    const results = Array.isArray(data.results) ? data.results : [];
     const result = {
-      wallpapers: data.results.map((photo, i) => _normalizePhoto(photo, query, i + (page - 1) * perPage)),
-      totalPages: data.total_pages,
-      total: data.total,
+      wallpapers: results.map((photo, i) => _normalizePhoto(photo, query, i + (page - 1) * perPage)),
+      totalPages: data.total_pages || 1,
+      total: data.total || 0,
     };
 
 
@@ -181,7 +187,8 @@ const API = (() => {
       order_by: 'popular'
     });
 
-    return data.map((photo, i) => _normalizePhoto(photo, 'Featured', i));
+    const results = Array.isArray(data) ? data : (Array.isArray(data.results) ? data.results : []);
+    return results.map((photo, i) => _normalizePhoto(photo, 'Featured', i));
   }
 
   /**

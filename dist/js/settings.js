@@ -42,39 +42,71 @@ const Settings = (() => {
     Storage.clearCache();
     const cacheVal = document.getElementById('cache-size-val');
     if (cacheVal) cacheVal.textContent = Storage.getCacheSizeFormatted();
-    UI.showToast('Cache cleared');
+    UI.showToast('Cache cleared successfully.');
   }
 
   /**
    * Handles the Rate App action.
-   * For web, shows a toast informing the rating is available in the mobile app.
-   * For Capacitor native builds, attempts to open the app store page.
+   * Opens the official website in an external browser.
    */
-  function rateApp() {
-    // Detect Capacitor environment
-    const isCapacitor = typeof Capacitor !== 'undefined' && Capacitor.getPlatform;
-    if (isCapacitor) {
-      const platform = Capacitor.getPlatform();
-      let storeUrl = '';
-      if (platform === 'android') {
-        // TODO: replace with actual package name
-        storeUrl = 'https://play.google.com/store/apps/details?id=com.example.app';
-      } else if (platform === 'ios') {
-        // TODO: replace with actual App Store ID
-        storeUrl = 'https://apps.apple.com/app/id123456789';
+  async function rateApp() {
+    const websiteUrl = 'https://abo-wallpapers.onrender.com';
+    const isCapacitor = typeof Capacitor !== 'undefined';
+    
+    if (isCapacitor && Capacitor.Plugins && Capacitor.Plugins.Browser) {
+      try {
+        await Capacitor.Plugins.Browser.open({ url: websiteUrl });
+      } catch (e) {
+        console.warn('[Settings] Browser plugin failed, falling back:', e);
+        window.open(websiteUrl, '_blank', 'noopener,noreferrer');
       }
-      if (storeUrl) {
-        try {
-          window.open(storeUrl, '_blank');
-          return;
-        } catch (_) {
-          // fall through to toast error
-        }
-      }
-      UI.showToast('Unable to open the app store. Please try again later.');
     } else {
-      // Web fallback
-      UI.showToast('Rating is available in the mobile app.');
+      window.open(websiteUrl, '_blank', 'noopener,noreferrer');
+    }
+  }
+
+  /**
+   * Handles the Share App action.
+   * Downloads the APK to the device cache and shares it via the native share sheet.
+   */
+  async function shareApp() {
+    const apkUrl = 'https://abo-wallpapers.onrender.com/download/abo-wallpapers.apk';
+    const shareTitle = 'ABO Wallpapers';
+    const shareText = 'ABO Wallpapers — Download and enjoy beautiful wallpapers.';
+    
+    const isCapacitor = typeof Capacitor !== 'undefined' && Capacitor.getPlatform;
+    
+    if (isCapacitor && Capacitor.Plugins && Capacitor.Plugins.Share && Capacitor.Plugins.Filesystem) {
+       UI.showToast('Preparing to share app...');
+       try {
+          // Download APK to cache
+          const fileName = 'abo-wallpapers.apk';
+          const downloadRes = await Capacitor.Plugins.Filesystem.downloadFile({
+             url: apkUrl,
+             path: fileName,
+             directory: 'CACHE'
+          });
+          
+          // Share the downloaded file
+          await Capacitor.Plugins.Share.share({
+             title: shareTitle,
+             text: shareText,
+             url: downloadRes.path,
+             dialogTitle: 'Share ABO Wallpapers'
+          });
+       } catch (err) {
+          console.error('[Settings] Share App failed:', err);
+          UI.showToast('Failed to prepare the app for sharing. Please try again.');
+       }
+    } else if (navigator.share) {
+       // Web Fallback
+       navigator.share({
+          title: shareTitle,
+          text: shareText,
+          url: 'https://abo-wallpapers.onrender.com'
+       }).catch(console.error);
+    } else {
+       UI.showToast('Sharing is not supported on this device.');
     }
   }
 
@@ -229,7 +261,7 @@ const Settings = (() => {
                 </span>
               </div>
               <!-- Share App -->
-              <div class="settings-row settings-row--bordered">
+              <div id="share-app-btn" class="settings-row settings-row--bordered">
                 <div class="settings-row__left">
                   <span class="settings-row__icon">
                     <svg class="icon--md" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -425,6 +457,8 @@ const Settings = (() => {
       renderScreen(); // Re-render to update the count
     });
     document.getElementById('download-quality-btn')?.addEventListener('click', openDqModal);
+    document.getElementById('rate-app-btn')?.addEventListener('click', rateApp);
+    document.getElementById('share-app-btn')?.addEventListener('click', shareApp);
     document.getElementById('privacy-policy-btn')?.addEventListener('click', () => {
       App.navigateTo('privacy-policy');
     });

@@ -99,10 +99,8 @@ const AboutUs = (() => {
             
             <!-- App Branding -->
             <div style="text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; width: 100%;">
-              <div class="app-logo-icon" style="width: 80px; height: 80px; border-radius: 20px; background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark, var(--color-primary))); display: flex; align-items: center; justify-content: center; color: white; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); margin-bottom: 0.5rem;">
-                <svg style="width: 3rem; height: 3rem;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-                </svg>
+              <div class="app-logo-icon" style="width: 80px; height: 80px; border-radius: 20px; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); margin-bottom: 0.5rem; background: var(--color-bg-primary);">
+                <img src="assets/apple-touch-icon.png" alt="ABO Logo" style="width: 100%; height: 100%; object-fit: cover;" />
               </div>
               <h2 style="font-size: 1.5rem; font-weight: 700; margin: 0; color: var(--color-text-primary);">Wallpaper Gallery</h2>
               <p style="font-size: 0.9rem; color: var(--color-text-secondary); margin: 0; font-style: italic;">Beautiful wallpapers for every screen.</p>
@@ -137,10 +135,7 @@ const AboutUs = (() => {
                 Developed with care by our team. If you have any inquiries, suggestions, or feedback, feel free to reach out.
               </p>
               <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
-                <div style="display: flex; align-items: center; gap: 0.5rem;">
-                  <span style="color: var(--color-text-secondary); font-weight: 500;">Email:</span>
-                  <a href="mailto:support@example.com" style="color: var(--color-primary); text-decoration: none; font-weight: 500;">support@example.com</a>
-                </div>
+
                 <div style="display: flex; align-items: center; gap: 0.5rem;">
                   <span style="color: var(--color-text-secondary); font-weight: 500;">Website:</span>
                   <a href="https://example.com" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); text-decoration: none; font-weight: 500;">https://example.com</a>
@@ -172,33 +167,6 @@ const AboutUs = (() => {
                   </svg>
                 </button>
 
-                <!-- X (Twitter) -->
-                <button class="social-icon-btn" data-platform="x" aria-label="Follow us on X" style="width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--color-border); background: var(--color-bg-secondary); color: var(--color-text-primary); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; outline: none; padding: 0;">
-                  <svg style="width: 1.25rem; height: 1.25rem;" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                  </svg>
-                </button>
-
-                <!-- YouTube -->
-                <button class="social-icon-btn" data-platform="youtube" aria-label="Follow us on YouTube" style="width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--color-border); background: var(--color-bg-secondary); color: var(--color-text-primary); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; outline: none; padding: 0;">
-                  <svg style="width: 1.5rem; height: 1.5rem;" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M23.498 6.163a3.003 3.003 0 00-2.11-2.11C19.518 3.545 12 3.545 12 3.545s-7.518 0-9.388.508a3.003 3.003 0 00-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 002.11 2.11c1.87.508 9.388.508 9.388.508s7.518 0 9.388-.508a3.003 3.003 0 002.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                  </svg>
-                </button>
-
-                <!-- Pinterest -->
-                <button class="social-icon-btn" data-platform="pinterest" aria-label="Follow us on Pinterest" style="width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--color-border); background: var(--color-bg-secondary); color: var(--color-text-primary); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; outline: none; padding: 0;">
-                  <svg style="width: 1.5rem; height: 1.5rem;" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.168 1.777 2.168 2.127 0 3.766-2.245 3.766-5.486 0-2.868-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.166-1.495-.69-2.433-2.878-2.433-4.629 0-3.766 2.737-7.229 7.892-7.229 4.15 0 7.372 2.957 7.372 6.9 0 4.12-2.593 7.433-6.192 7.433-1.209 0-2.345-.628-2.729-1.365 0 0-.599 2.261-.744 2.827-.272 1.05-.997 2.378-1.492 3.178C9.012 23.834 10.484 24 12.017 24c6.62 0 12-5.38 12-12S18.62 0 12.017 0z"/>
-                  </svg>
-                </button>
-
-                <!-- Telegram -->
-                <button class="social-icon-btn" data-platform="telegram" aria-label="Follow us on Telegram" style="width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--color-border); background: var(--color-bg-secondary); color: var(--color-text-primary); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; outline: none; padding: 0;">
-                  <svg style="width: 1.5rem; height: 1.5rem;" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.66-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.35-.49.96-.75 3.78-1.65 6.3-2.73 7.57-3.26 3.61-1.5 4.36-1.76 4.85-1.76.11 0 .35.03.5.16.13.12.16.29.18.42z"/>
-                  </svg>
-                </button>
 
               </div>
             </div>

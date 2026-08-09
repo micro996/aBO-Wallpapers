@@ -484,8 +484,10 @@ const App = (() => {
         } else {
           ptrSpinner.classList.remove('ready');
         }
-      } else {
+      } else if (window.scrollY > 0) {
         isPulling = false;
+        _resetPtr(ptrSpinner);
+      } else if (deltaY < 0) {
         _resetPtr(ptrSpinner);
       }
     }, { passive: false });
